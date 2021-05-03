@@ -1,0 +1,28 @@
+---
+name: BlueprintTemplate
+# name is a mandatory field
+
+description: Template application for Run as Blueprint type Plugin
+# description is a mandatory field and it should explain about the plugin briefly (1000 characters max.)
+
+pluginType: runAsNewBlueprint
+# pluginType is a mandatory field and should have any one of the values:
+# runAsCustomRecipe – Transformation recipe added as a plugin
+# runAsNewBlueprint – Application uploaded as executable and added as a custom blueprint
+# runAsNewBlueprintExternal – Application running elsewhere added as a custom blueprint
+# runAsNewBlueprintWithUI – Application uploaded as executable and added as a custom blueprint, and UI provided by the platform
+
+landingPagePath: home
+#landingPagePath is a mandatory field and denotes the plugin application’s home endpoint to be called by UpShift platform
+
+resultPagePath: result
+# resultPagePath is a mandatory field and denotes the plugin application’s result endpoint to be called by UpShift platform
+
+authorName: plugin.author@cognizant.com
+# authorName is a mandatory field and should not exceed 255 characters
+
+isEnabled: true
+# isEnabled is a mandatory field and should be set to true
+
+version: 4.0.5
+# version is a mandatory field and it should be of major.minor.patch (4.0.5) format

@@ -1,0 +1,94 @@
+version: 2.1
+
+jobs:
+  build:
+    description: build
+    working_directory: ~/<Application Name>
+    docker:
+      - image: maven:3.6.3-jdk-8
+    steps:
+      - checkout
+      - run:
+          name: Build java app
+          command: mvn clean install -Dmaven.test.skip=true
+  build-and-zip:
+    description: Build the app and zip the output
+    working_directory: ~/<Application Name>
+    docker:
+      - image: maven:3.6.3-jdk-8
+    steps:
+      - checkout
+      - run:
+          name: Build java app
+          command: mvn clean install -Dmaven.test.skip=true
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export pluginId=${SwaggerPluginId}'>> $BASH_ENV
+            source $BASH_ENV    
+      - run:
+          name: Zip the build output
+          command: bash ./.circleci/setup_zip_build_output.sh
+      - run:
+          name: Install jFrog CLI
+          command: curl -fL https://getcli.jfrog.io | sh
+      - run:
+          name: Push to Artifactory
+          command: |
+            if [ $CIRCLE_JOB == "build-and-zip" ]; then export BUILD_ID=$CIRCLE_WORKFLOW_ID; else export BUILD_ID=$CIRCLE_BUILD_NUM;fi
+            ./jfrog rt c --url ${ARTIFACTORY_URL}artifactory --user $ARTIFACTORY_USER --apikey $ARTIFACTORY_TOKEN --interactive=false
+            ./jfrog rt u package-output/<Application Name>_$CIRCLE_BUILD_NUM.zip /generic-dev-local/UpShift/<Application Name>/ --build-name=<Application Name> --build-number=$CIRCLE_BUILD_NUM --props build.id=$BUILD_ID
+  promote-to-prod:
+    description: Promote the build to production artifactory
+    working_directory: ~/<Application Name>
+    docker:
+      - image: circleci/node:9.11.1-stretch
+    steps:
+      - checkout
+      - run:
+          name: Prmote build
+          command: ./.circleci/promote_build.sh
+  
+workflows:
+  build-and-zip:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - /sast\/.*/
+                - /oss\/.*/
+      - request-to-move-build-to-artifactory:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - build-and-zip:
+          context:
+            - Codehub-Common
+            - Upshift-Common
+          requires:
+            - request-to-move-build-to-artifactory
+          filters:
+            branches:
+              only:
+                - master
+      - request-promote-to-prod:
+          type: approval
+          requires:
+            - build-and-zip
+          filters:
+            branches:
+              only:
+                - master
+      - promote-to-prod:
+          context: Codehub-Common
+          requires:
+            - request-promote-to-prod
+          filters:
+            branches:
+              only:
+                - master

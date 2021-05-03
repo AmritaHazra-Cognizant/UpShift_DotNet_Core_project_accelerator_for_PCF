@@ -1,0 +1,250 @@
+version: 2.1
+
+jobs:
+  test-and-build:
+    description: Run tests and build
+    working_directory: ~/<ApplicationName>
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk
+    steps:
+      - checkout
+      - run:
+          name: Setup Dependencies
+          command: ./.circleci/setup_dependencies.sh && ./.circleci/setup_client_test_dependencies.sh
+      - restore_cache:
+          keys:
+            - v1-node-dependencies-{{ checksum "<ApplicationName>/ClientApp/package-lock.json" }}
+      - run:
+          name: Install npm dependencies for client app
+          command: cd <ApplicationName>/ClientApp && npm install
+      - save_cache:
+          key: v1-node-dependencies-{{ checksum "<ApplicationName>/ClientApp/package-lock.json" }}
+          paths:
+            - <ApplicationName>/ClientApp/node_modules
+      - run:
+          name: Lint client app
+          command: cd <ApplicationName>/ClientApp && $(npm bin)/ng lint
+      - run:
+          name: Run Unit test cases for client app
+          command: cd <ApplicationName>/ClientApp && $(npm bin)/ng test --watch=false --progress=false --browsers=ChromeHeadlessCI
+      - run:
+          name: Build client app
+          command: >
+            cd <ApplicationName>/ClientApp && 
+             npm run build -- --prod
+      - run:
+          name: Build dotnet core app
+          command: dotnet build <ApplicationName>.sln
+      - run:
+          name: Run dotnet core app Tests
+          command: cd <ApplicationName>-Test && dotnet test
+  publish-and-zip:
+    description: Publish the app and zip the output
+    working_directory: ~/<ApplicationName>
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk
+    steps:
+      - checkout
+      - run:
+          name: Setup Dependencies
+          command: ./.circleci/setup_dependencies.sh
+      - restore_cache:
+          keys:
+            - v1-node-dependencies-{{ checksum "<ApplicationName>/ClientApp/package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: cd <ApplicationName>/ClientApp && npm install
+      - save_cache:
+          paths:
+            - <ApplicationName>/ClientApp/node_modules
+          key: v1-node-dependencies-{{ checksum "<ApplicationName>/ClientApp/package-lock.json" }}
+      - run:
+          name: Build Client App
+          command: >
+            cd <ApplicationName>/ClientApp &&
+             npm run build -- --prod
+      - run:
+          name: Publish dotnet core App
+          command: dotnet publish <ApplicationName>/<ApplicationName>.csproj -c Release
+      - run:
+          name: Zip the build output
+          command: ./.circleci/setup_zip_build_output.sh
+      - run:
+          name: Install jFrog CLI
+          command: curl -fL https://getcli.jfrog.io | sh
+      - run:
+          name: Push to Artifactory
+          command: |
+            if [ $CIRCLE_JOB == "publish-and-zip" ]; then export BUILD_ID=$CIRCLE_WORKFLOW_ID; else export BUILD_ID=$CIRCLE_BUILD_NUM;fi
+            ./jfrog rt c --url ${ARTIFACTORY_URL}artifactory --user $ARTIFACTORY_USER --apikey $ARTIFACTORY_TOKEN --interactive=false
+            ./jfrog rt u package-output/UpShift-<ApplicationName>_$CIRCLE_BUILD_NUM.zip generic-dev-local/UpShift/<ApplicationName>/ --build-name=Fego-test-repo --build-number=$CIRCLE_BUILD_NUM --props build.id=$BUILD_ID
+  promote-to-prod:
+    description: Promote the build to production artifactory
+    working_directory: ~/<ApplicationName>
+    docker:
+      - image: circleci/node:9.11.1-stretch
+    steps:
+      - checkout
+      - run:
+          name: Prmote build
+          command: ./.circleci/promote_build.sh
+
+  merge-integration-to-master:
+    description: Merge integration branch to master
+    working_directory: ~/<ApplicationName>
+    docker:
+      - image: alpine/git
+    steps:
+      - checkout
+      - run:
+          name: Merge to master branch
+          command: |
+            git clone https://$GIT_ACCESS_TOKEN@github.com/CognizantCodeHub/<ApplicationName>.git
+            cd <ApplicationName>
+            git fetch  https://$GIT_ACCESS_TOKEN@github.com/CognizantCodeHub/<ApplicationName>.git Integration
+            git checkout master
+            git merge origin/Integration
+            git config user.email $GIT_EMAIL
+            git push  https://$GIT_ACCESS_TOKEN@github.com/CognizantCodeHub/<ApplicationName>.git master
+  checkmarx_scan:
+    docker:
+      - image: codehub-docker.jfrog.io/devops-checkmarx:latest
+        auth:
+          username: $ARTIFACTORY_USER
+          password: $ARTIFACTORY_TOKEN
+    working_directory: ~/<ApplicationName>
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Start the Checkmarx scan
+          command: |
+            /opt/CxConsolePlugin/runCxConsole.sh Scan -v \
+            -CxServer $CHECKMARX_SERVER \
+            -Cxuser $CHECKMARX_USER \
+            -CxPassword $CHECKMARX_PASSWORD \
+            -ProjectName "CxServer\Acc-IPReady\<ApplicationName>" \
+            -LocationType folder \
+            -LocationPath ~/<ApplicationName>/<ApplicationName> \
+            -Preset "Cognizant Default Preset" \
+            -executepackagedependency \
+            -ReportPDF ~/app/report/<ApplicationName>-scan-results.pdf
+      - store_artifacts:
+          path: ~/app/report/<ApplicationName>-scan-results.pdf
+  blackduck_scan:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk
+    working_directory: ~/<ApplicationName>
+    environment:
+      COMMIT_ID: $(echo $CIRCLE_SHA1 | cut -c1-7)
+    steps:
+      - checkout
+      - attach_workspace:
+          at: workspace
+      - run:
+          name: Setup Dependencies
+          command: ./.circleci/setup_dependencies.sh && ./.circleci/setup_client_test_dependencies.sh
+      - run:
+          name: Install Java
+          command: apt-get -y install default-jre
+      - run:
+          name: Install npm packages
+          command: cd <ApplicationName>/ClientApp && npm install
+      - run:
+          name: Build dotnet core app
+          command: dotnet build <ApplicationName>.sln
+      - run:
+          name: Start the Synopsys Detect scan
+          command: |
+            cd ~/<ApplicationName>/<ApplicationName>
+            bash ./../.circleci/detect.sh \
+            --blackduck.url=$BLACKDUCK_URL \
+            --blackduck.api.token=$BLACKDUCK_TOKEN \
+            --detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING \
+            --detect.npm.path=/usr/bin/npm \
+            --detect.npm.node.path=/usr/bin/node \
+            --detect.project.name="<ApplicationName>" \
+            --detect.project.version.name="ver.$CIRCLE_BUILD_NUM.$COMMIT_ID" \
+            --detect.default.project.version.scheme=timestamp \
+            --detect.default.project.version.timeformat='yyyy-MM-dd:HH:mm:ss.SSS' \
+            --detect.risk.report.pdf=true \
+            --detect.risk.report.pdf.path="~/<ApplicationName>/report" \
+            --detect.notices.report=true \
+            --detect.notices.report.path="~/<ApplicationName>/report"
+      - store_artifacts:
+          path: ~/<ApplicationName>/report
+workflows:
+  test_build_and_publish:
+    jobs:
+      - test-and-build:
+          filters:
+            branches:
+              ignore:
+                - /sast\/.*/
+                - /oss\/.*/
+      - publish-and-zip:
+          context: Codehub-Common
+          filters:
+            branches:
+              only:
+                - master
+      - request-promote-to-prod:
+          type: approval
+          requires:
+            - publish-and-zip
+          filters:
+            branches:
+              only:
+                - master
+      - promote-to-prod:
+          context: Codehub-Common
+          requires:
+            - request-promote-to-prod
+          filters:
+            branches:
+              only:
+                - master
+      - checkmarx_scan:
+          context: Codehub-Common
+          filters:
+            branches:
+              only: # Follow branching conventions matching the regex
+                - /sast\/.*/ #eg sast/1, sast/prod
+      - blackduck_scan:
+          context: Codehub-Common
+          filters:
+            branches:
+              only: # Follow branching conventions matching the regex
+                - /oss\/.*/ # eg: oss/1, oss/prod
+      - request-to-move-integration-build-to-artifactory:
+          type: approval
+          requires:
+            - test-and-build
+          filters:
+            branches:
+              only:
+                - Integration
+      - publish-and-zip:
+          name: move-integration-build-to-artifactory
+          context: Codehub-Common
+          requires:
+            - request-to-move-integration-build-to-artifactory
+          filters:
+            branches:
+              only:
+                - Integration
+      - request-to-merge-to-master:
+          type: approval
+          requires:
+            - move-integration-build-to-artifactory
+          filters:
+            branches:
+              only:
+                - Integration
+      - merge-integration-to-master:
+          requires:
+            - request-to-merge-to-master
+          filters:
+            branches:
+              only:
+                - Integration

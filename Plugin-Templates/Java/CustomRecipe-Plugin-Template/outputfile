@@ -1,0 +1,6 @@
+{
+"operation":"convertAppProp2configMapYml",
+"label":"Convert application.properties file to config-map.yml",
+"status":"success",
+"errorLog":null
+}

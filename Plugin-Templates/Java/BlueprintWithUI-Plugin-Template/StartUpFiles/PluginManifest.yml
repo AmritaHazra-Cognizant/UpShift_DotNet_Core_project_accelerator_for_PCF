@@ -1,0 +1,26 @@
+---
+name: BlueprintWithUITemplate
+# name is a mandatory field
+
+description: Template application for Run as Blueprint With UI type Plugin
+# description is a mandatory field and it should explain about the plugin briefly (1000 characters max.)
+
+pluginType: runAsNewBlueprintWithUI
+# pluginType is a mandatory field and should have any one of the values:
+# runAsCustomRecipe – Transformation recipe added as a plugin
+# runAsNewBlueprint – Application uploaded as executable and added as a custom blueprint
+# runAsNewBlueprintExternal – Application running elsewhere added as a custom blueprint
+# runAsNewBlueprintWithUI – Application uploaded as executable and added as a custom blueprint, and UI provided by the platform
+
+implementationLanguage: Java
+# implementationLanguage is a mandatory field and denotes the source code language of the plugin (Java)
+# Plugins running on Java 1.8 is supported for Java code transformation
+
+authorName: plugin.author@cognizant.com
+# authorName is a mandatory field and should not exceed 255 characters
+
+isEnabled: true
+# isEnabled is a mandatory field and should be set to true
+
+version: 4.2.2
+# version is a mandatory field and it should be of major.minor.patch (4.2.2) format

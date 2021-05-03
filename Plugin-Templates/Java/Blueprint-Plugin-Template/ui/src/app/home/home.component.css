@@ -1,0 +1,13 @@
+.proceedButton {
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 400;
+    width: 205px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: #01b13f;
+}
+
+.proceedButton:hover {
+    cursor: pointer;
+}

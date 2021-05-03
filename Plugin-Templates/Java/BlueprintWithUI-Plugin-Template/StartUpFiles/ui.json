@@ -1,0 +1,21 @@
+{
+  "input":
+  [
+    {
+      "type": "git"
+    }
+  ],
+  "postprocessing":
+  [
+    {
+      "type" : "commit"
+    }
+  ],
+  "result":
+  [
+    {
+      "type": "json",
+      "filename": "output.json"
+    }
+  ]
+}
