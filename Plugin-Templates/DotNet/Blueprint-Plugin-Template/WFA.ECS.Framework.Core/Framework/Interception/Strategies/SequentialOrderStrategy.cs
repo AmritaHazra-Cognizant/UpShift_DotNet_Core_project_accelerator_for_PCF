@@ -1,0 +1,10 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace WFA.ECS.Framework.Core.Framework.Interception.Strategies
+{
+    class SequentialOrderStrategy
+    {
+    }
+}
