@@ -1,10 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WFA.ECS.Framework.Core.Framework.Interception.Internal.Interfaces
 {
-    class IInterceptorMapping
-    {
-    }
+	/// <summary>
+	/// Interceptor Mapping Interface 
+	/// </sumary>
+	internal interface IInterceptorMapping
+	{
+		/// <summary>
+		/// Attribute Type 
+		/// </sumary>
+		Type AttributeType { get; }
+
+		/// <summary>
+		/// Interceptor Type 
+		/// </sumary>
+		Type InterceptorType { get; }
+	}
 }
