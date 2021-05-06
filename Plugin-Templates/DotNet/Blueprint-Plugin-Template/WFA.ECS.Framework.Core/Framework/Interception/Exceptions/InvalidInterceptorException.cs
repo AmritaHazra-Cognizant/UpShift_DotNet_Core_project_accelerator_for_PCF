@@ -1,10 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WFA.ECS.Framework.Core.Framework.Interception.Exceptions
 {
-    class InvalidInterceptorException
-    {
-    }
+	/// <summary>
+	/// Exception thrown when an Interceptor Attribute is applied but the Interceptor hasnt been configured
+	/// </summary>
+	[ExcludeFromCodeCoverage]
+	public class InvalidInterceptorException : Exception
+	{
+		/// <summary>
+		/// Initialises a new instance of the <see cref="InvalidInterceptorException"/> class
+		/// </summary>
+		/// <param name="errorMessage">Error Message Text </param>
+		public InvalidInterceptorException(string errorMessage) : base(errorMessage)
+		{
+		}
+	}
 }
