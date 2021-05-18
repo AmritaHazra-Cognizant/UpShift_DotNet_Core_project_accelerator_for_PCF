@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetCore.API.Contract\DotNetCore.API.Contract.csproj" />
+    <ProjectReference Include="..\DotNetCore.API.DataService\DotNetCore.API.DataService.csproj" />
+    <ProjectReference Include="..\DotNetCore.API.DBAccess\DotNetCore.API.DBAccess.csproj" />
+  </ItemGroup>
+
+</Project>
