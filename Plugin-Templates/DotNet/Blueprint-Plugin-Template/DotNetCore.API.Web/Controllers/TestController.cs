@@ -50,11 +50,11 @@ namespace DotNetCore.API.Web.Controllers
         /// This API is calling Backend REST API
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetStringFromRestApi")]
-        public async Task<string> GetStringFromRestApi()
+        [HttpGet("GetEmployeesFromRestApi")]
+        public async Task<IEnumerable<EmployeeInfo>> GetEmployeesFromRestApi()
         {
-           
-            return "WIP";
+            var result = await _sampleBc.RetrieveEmployeesFromRestApi();
+            return result.Model;
         }
 
     }

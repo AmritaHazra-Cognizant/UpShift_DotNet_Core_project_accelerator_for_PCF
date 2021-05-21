@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.14" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.10" />
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetCore.API.BusinessLogic\DotNetCore.API.BusinessLogic.csproj" />
+    <ProjectReference Include="..\DotNetCore.API.Caching\DotNetCore.API.Caching.csproj" />
     <ProjectReference Include="..\DotNetCore.API.Contract\DotNetCore.API.Contract.csproj" />
     <ProjectReference Include="..\DotNetCore.API.DataService\DotNetCore.API.DataService.csproj" />
     <ProjectReference Include="..\DotNetCore.API.Logging\DotNetCore.API.Logging.csproj" />
@@ -24,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Logging\" />
-    <Folder Include="ServiceAdapters\" />
   </ItemGroup>
 
   <ItemGroup>

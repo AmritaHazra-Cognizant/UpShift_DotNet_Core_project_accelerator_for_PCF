@@ -51,8 +51,9 @@ namespace DotNetCore.API.Logging
 
         public void AfterInvoke(InvocationContext invocationContext, object methodResult, Exception ex)
         {
-            try {
-                HandlePostMethodExecution(invocationContext, methodResult, 
+            try
+            {
+                HandlePostMethodExecution(invocationContext, methodResult,
                     (ex != null && ex.InnerException != null ? ex.InnerException : ex));
             }
             catch (Exception innerEx)
@@ -71,12 +72,17 @@ namespace DotNetCore.API.Logging
         {
             _stopWatch.Stop();
             IBaseHandler targetObject = invocationContext.Invocation.InvocationTarget as IBaseHandler;
-            TransactionLogEntry methodlogEntry = null;
+            TransactionLogEntry methodlogEntry = new TransactionLogEntry();
             if (targetObject != null)
             {
                 methodlogEntry = targetObject.LogEntry;
             }
 
+            HandleTransactionFlow(methodlogEntry, invocationContext, targetObject, result, ex);
+            if (ex != null && !this.loggingAttribute.IsExceptionHandlingNotRequired)
+            {
+                HandleExceptionFlow(methodlogEntry, invocationContext, targetObject, ex);
+            }
         }
 
         private void HandleTransactionFlow(TransactionLogEntry methodLogEntry,
@@ -86,8 +92,8 @@ namespace DotNetCore.API.Logging
             methodLogEntry.LoggingMethodName = invocationContext.GetExecutingMethodFullName();
             methodLogEntry.ErrorMessage = ex == null ?
                 (string.IsNullOrWhiteSpace(methodLogEntry.ErrorMessage) ?
-                "None" : methodLogEntry.ErrorMessage) : 
-                !string.IsNullOrWhiteSpace(this.loggingAttribute.ErrorMessage) ? 
+                "None" : methodLogEntry.ErrorMessage) :
+                !string.IsNullOrWhiteSpace(this.loggingAttribute.ErrorMessage) ?
                 this.loggingAttribute.ErrorMessage : ex.Message;
 
             methodLogEntry.TransactionStatus = ex == null ? TransactionStatus.Success : TransactionStatus.Fail;
@@ -108,6 +114,8 @@ namespace DotNetCore.API.Logging
 
             if (!this.loggingAttribute.IsFlowBreakReuired)
             {
+                if (methodLogEntry.ExtendedProperties == null)
+                    methodLogEntry.ExtendedProperties = new Dictionary<string, object>();
                 methodLogEntry.ExtendedProperties["isPartialError"] = "True";
             }
 
@@ -125,7 +133,8 @@ namespace DotNetCore.API.Logging
                 appEx.LogEntry = methodLogEntry;
                 exToThrow = appEx;
             }
-            else {
+            else
+            {
                 exToThrow = new AppException(ex, methodLogEntry, this.loggingAttribute.ErrorMessage);
             }
             // LOG
@@ -135,5 +144,5 @@ namespace DotNetCore.API.Logging
             else
                 invocationContext.MethodException = null;
         }
-        }
+    }
 }

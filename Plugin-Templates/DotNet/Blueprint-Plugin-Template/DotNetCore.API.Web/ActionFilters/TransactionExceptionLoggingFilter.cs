@@ -17,11 +17,10 @@ namespace DotNetCore.API.Web.ActionFilters
 {
     public class TransactionExceptionLoggingFilter : IActionFilter, IOrderedFilter
     {
-        ILogger<TransactionExceptionLoggingFilter> _logger;
+        
         private readonly Stopwatch _stopwatch;
-        public TransactionExceptionLoggingFilter(ILogger<TransactionExceptionLoggingFilter> logger)
+        public TransactionExceptionLoggingFilter()
         {
-            _logger = logger;
             _stopwatch = new Stopwatch();
         }
         public int Order { get; } = int.MaxValue - 10;

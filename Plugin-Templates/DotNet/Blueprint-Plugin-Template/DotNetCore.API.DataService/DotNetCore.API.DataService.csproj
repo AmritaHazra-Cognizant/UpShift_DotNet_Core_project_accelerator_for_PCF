@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DotNetCore.API.Contract\DotNetCore.API.Contract.csproj" />
     <ProjectReference Include="..\DotNetCore.API.Logging\DotNetCore.API.Logging.csproj" />
     <ProjectReference Include="..\DotNetCore.Framework\DotNetCore.Framework.csproj" />
   </ItemGroup>

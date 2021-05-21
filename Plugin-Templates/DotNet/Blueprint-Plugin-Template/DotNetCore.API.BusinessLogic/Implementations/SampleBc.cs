@@ -6,6 +6,9 @@ using DotNetCore.API.BusinessLogic.Contracts;
 using DotNetCore.API.DataService.Contracts;
 using DotNetCore.API.DBAccess.Contracts;
 using DotNetCore.API.Contract;
+using DotNetCore.API.Caching.MemoryCache;
+using DotNetCore.Framework.Caching.CoreCaching;
+
 namespace DotNetCore.API.BusinessLogic.Implementations
 {
     public class SampleBc : ISampleBc
@@ -27,6 +30,12 @@ namespace DotNetCore.API.BusinessLogic.Implementations
         {
             var result = await _database.GetAllStudent();
             return result;
+        }
+        [MemoryCache("RetrieveEmployees","")]
+        public async Task<Cacheable<List<EmployeeInfo>>> RetrieveEmployeesFromRestApi()
+        {
+            var result = await _service.RetrieveEmployees();
+            return new Cacheable<List<EmployeeInfo>> { Model = result };
         }
     }
 }
