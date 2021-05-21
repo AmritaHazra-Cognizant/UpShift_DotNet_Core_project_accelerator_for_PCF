@@ -74,13 +74,18 @@ namespace DotNetCore.API.Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Cors should remain first
+
             var namedCorsPolicy = env.IsDevelopment() ? "CorsPolicyDevelopment" : "CorsPolicyDeployment";
             app.UseCors(namedCorsPolicy);
-           
+            
+            // Add Response Headers
+            app.UseCoreResponseHaedersMiddleware();
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c => {
+                app.UseSwaggerUI(c =>
+                {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API Template");
                     c.RoutePrefix = string.Empty;
                 });

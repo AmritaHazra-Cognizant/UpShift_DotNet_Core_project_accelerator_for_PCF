@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore.Framework", "Dot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore.API.CommonUtils", "DotNetCore.API.CommonUtils\DotNetCore.API.CommonUtils.csproj", "{43169B45-D16E-4C81-A399-066891143719}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore.API.Logging", "DotNetCore.API.Logging\DotNetCore.API.Logging.csproj", "{62878DDE-6CE4-45E8-B169-72172A0A5583}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCore.API.Logging", "DotNetCore.API.Logging\DotNetCore.API.Logging.csproj", "{62878DDE-6CE4-45E8-B169-72172A0A5583}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCore.API.Caching", "DotNetCore.API.Caching\DotNetCore.API.Caching.csproj", "{23A6808B-BA38-4262-9269-33679D468547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{62878DDE-6CE4-45E8-B169-72172A0A5583}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62878DDE-6CE4-45E8-B169-72172A0A5583}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62878DDE-6CE4-45E8-B169-72172A0A5583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A6808B-BA38-4262-9269-33679D468547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A6808B-BA38-4262-9269-33679D468547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A6808B-BA38-4262-9269-33679D468547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A6808B-BA38-4262-9269-33679D468547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

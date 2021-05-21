@@ -18,7 +18,10 @@ namespace DotNetCore.API.Web.Extensions
         {
             return builder.UseMiddleware<ExceptionHandlingMiddleware>(new ApiExceptionOptions());
         }
-
+        internal static IApplicationBuilder UseCoreResponseHaedersMiddleware(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ResponseHeadersMiddleware>();
+        }
         internal static IApplicationBuilder UseExceptionHandlingMiddleware(this IApplicationBuilder builder, Action<ApiExceptionOptions> config)
         {
             var options = new ApiExceptionOptions();

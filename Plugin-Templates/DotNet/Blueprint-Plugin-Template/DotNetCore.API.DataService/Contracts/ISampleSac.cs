@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using DotNetCore.API.Contract;
 namespace DotNetCore.API.DataService.Contracts
 {
     /*
@@ -13,5 +13,7 @@ namespace DotNetCore.API.DataService.Contracts
     public interface ISampleSac
     {
         Task<string> RetrieveHellowWorld();
+
+        Task<List<EmployeeInfo>> RetrieveEmployees();
     }
 }
