@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>.NET core Migrator</title>
+	<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"></link>
+	<!-- <link rel="stylesheet" href="../css/style.css"></link> -->
+	<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=qCW_mwFLHSDCkPZ10oaIfiJ5LJRc9adIfgN-PhjCbvoFGOVqWPw9ceep0jS3at0BVqkg5YDmQzwoEUhbNadBK0Zwgad8PlJQLDPZPu70TbNEMpV4BGbSXJ9zqNEhKVPNvZDYAKlYOj5LhUlfnbQbeviSA2foa3fV1hTv9PTRjterueeZDYZ1nV3W3-HzBrFyBsFa4Nt2Ydd6fKfFUSx2gic2_bR_zbBi-PWChgrbfppBQ7VJU9LWu0UCEodOCUl-o4EGSeviGT2rrrZiXcPh_T0ki9_nvQCt-bVxKVWR9s9swsuWUWxDcckPo2KocStJkJ5b7jAslfxznQgFEk7Ll9offsCpO5r6aGZmOwuEtdUGOPdjRA83peRX0NYPmiplL3hJ73ehfgta0cLXqiOsm3u4UX9zggfR9WZ8sJ2MXsOxxVCWBt5nJaeMUtqGeAZNLLzyNSuzD6SYsovsouAnDYPLawz2g3nYjB-UGEd542sLMR3JlOR5931xK4taUibEn5PS2g59gkT83WWndXa5WTAwLNIJMeWSKqdl9Ufbtf5MHlZzVFe9mGdyMSXRov7MhnBxUrHuvypDEvia_-ScozQK1zK_t_R84vuHa0AXBDxO3uSwK_PM_WX2mfxhiXQZ9TeEg140v7kthhHx1SYgxrpD4g1DNGCa158f7Lxl8TiZZ6uOrcrfqUieTsx9cP5GUTPMXIytdB9ooJ8pjqghWgrmj02M9HQSYHdb0sNy2xSpLDWCQzqowCKiABE-vJiYx7x4MQpCa8Mukg_x7ne9KlS2fFlWJ2Il9wTXL4CxITqe-fbQl9jf57CGv8ULM7fVd8LdlMKUPk7o75fhZggC8vDa15OgldyQLqD4zyPMeZOot9yshgWhu11UxnovGFE-dmLeOV9yUZUCBpP-kvsNY3ugN49bSV_ycKbO4rUNUnvhRP_0eOazEaVr6nck0H0bSmmpII5zUVvBUB3cJBVkos7ReFLScq8X5UPeXVWqA7ngSTzNeozQqbq-VWdi7N5nlGLKZJ52EBVyIHTnvK-Qcz-_SfCpvGl10Z-aB4InrL-fxd3b3BI6oT88IavvodJpEd3-7AiJbAYJdV1HHeJYlm8bg4nuUkdkgL5YNclCFY3-stdHNh6IdXSlFy0zLwspRTrrDEApf-d0grBM5SkFLT2-1Vgj1d7WnrpcArK6D6Nzcuj725znSdYCAVp1s-9aUDZpG1CdyCoNciPxKNRPbA" nonce="d9ae7895230a31efdef05c9eac03a51f" charset="UTF-8"></script><script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	
+</head>
+<script>
+$(document).ready(function() {
+ $('#applnName').on('change', function() {
+	 var value = $(this).val().replace(" ", ".");
+   $('#nameSpace').val(value);
+ }); 
+});
+</script>
+<body style="background-color:#EAFAF1;">
+
+	<div class="container">
+	<h1 class="text-center text"> .NET Core Project Generator </h1>
+		<form action="#" th:action="@{/createProject}" th:object="${entity}" method="post">
+			<div class="">
+				<table class="table table-hover">
+					<thead></thead>
+					<tbody>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="applnName">Application Name :</label>
+							</td>
+							<td width="60%">
+								<input type="text" th:field="*{applnName}" class="form-control" id="applnName" placeholder="Application Name"  th:required="required"/>
+								<!-- <input type="text" th:field="*{applnName}" th:value="${#strings.replace( ${entity.applnName},' ','.')}" class="form-control" id="applnName" placeholder="Application Name"  th:required="required"/> -->
+								
+							</td>
+							<td width="20%" rowspan="7"  align="center">
+								<table class="table table-hover">
+									<thead> <b>Common Utility Framework </b></thead>
+									<tbody>
+										<tr th:each="commonFramework : ${entity.commonFrameworks}">
+											<td style="border: solid; border-width: 10px; border-color: #e8e7f8; border-radius: 10px; font-weight: bold;" >
+												<input type="checkbox" name="commonFrameworks" style="margin-right: 4px;"
+										            th:text="${commonFramework}"
+										            th:value="${commonFramework}" 
+										            th:th:checked="${commonFramework}" 
+										            th:checked="${1 == 1}"
+										            disabled= "true"
+										        />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="projectType">Project Type :</label>
+							</td>
+							<td width="40%">
+								<!-- <input type="text" th:field="*{projectType}" class="form-control" id="projectType" placeholder="Project Type" th:required="required"/> -->
+								<select th:field="*{projectType}" class="form-control" th:required="required">
+								    <option value="webapi" >WEB API</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="nameSpace">NameSpace :</label>
+							</td>
+							<td width="40%">
+								<input type="text" th:name="nameSpace" th:field="*{nameSpace}" class="form-control" id="nameSpace" placeholder="NameSpace" />
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="version">.NET Core Version :</label>
+							</td>
+							<td width="40%">
+								<!-- <input type="text" th:field="*{version}" class="form-control" id="version" placeholder="Version" th:required="required" /> -->
+								<select th:field="*{version}" class="form-control" th:required="required">
+								    <option value="core3.1" >.NET Core 3.1</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="dbName">Database :</label>
+							</td>
+							<td width="40%">
+								<!-- <input type="text" th:field="*{dbName}" class="form-control" id="dbName" placeholder="Database Name" /> -->
+								<select th:field="*{dbName}" class="form-control">
+								    <option th:value="'SQLServer'" th:text="SQL-Server"></option>
+								    <option th:value="'Oracle'" th:text="Oracle" ></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="externalSrvcType">External Service Type :</label>
+							</td>
+							<td width="40%">
+								<!-- <input type="text" th:field="*{externalSrvcType}" class="form-control" id="externalSrvcType" placeholder="External Service Type" /> -->
+								<select th:field="*{externalSrvcType}" class="form-control">
+								    <option th:value="SOAP" th:text="SOAP" ></option>
+								    <option th:value="REST" th:text="REST" ></option>
+								    <option th:value="Both" th:text="Both" ></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="right" style="vertical-align: middle;">
+								<label class="control-label" for="serverType">Server Type :</label>
+							</td>
+							<td width="40%">
+								<!-- <input type="text" th:field="*{serverType}" class="form-control" id="serverType" placeholder="Server Type" /> -->
+								<select th:field="*{serverType}" class="form-control">
+									<option value="onPremises" >On Premises</option>
+								    <option value="cloud">Cloud Compatible</option>
+								</select>
+								
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+				<table align="center">
+                <tr>
+					<td></td>
+					<td colspan="4" >
+						<div>
+		                     <input type="submit" class="btn btn-primary mx-auto d-block" value=" Submit " />
+		                     <input type="reset" class="btn btn-primary mx-auto d-block" value=" Reset " />
+		                 </div>
+					</td>
+				</tr>
+               </table>
+            </div>
+		</form>
+	</div>
+	
+</body>
+</html>
