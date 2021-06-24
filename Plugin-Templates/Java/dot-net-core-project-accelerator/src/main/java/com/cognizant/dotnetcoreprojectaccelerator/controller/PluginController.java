@@ -79,7 +79,7 @@ public class PluginController {
                 }
 
                 // Execute the plugin
-                pluginExecutor.execute(output);
+                //pluginExecutor.execute(output);
 
                 output.setStatus(SUCCESS);
             } catch (Exception e) {
@@ -140,7 +140,7 @@ public class PluginController {
      *
      * @param processInstanceId - String
      */
-    @PostMapping("postResultStatusToUpShift")
+    //@PostMapping("postResultStatusToUpShift")
     public void initiateResponseToUpShift(@PathVariable("processInstanceId") String processInstanceId) {
         LOGGER.info("Starting to send status message to UpShift (Orchestration Engine) for processInstanceId " + processInstanceId);
 

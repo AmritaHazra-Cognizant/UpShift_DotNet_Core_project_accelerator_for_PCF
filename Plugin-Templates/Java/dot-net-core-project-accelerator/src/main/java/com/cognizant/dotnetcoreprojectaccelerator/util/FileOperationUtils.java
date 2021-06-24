@@ -33,23 +33,15 @@ public class FileOperationUtils {
 		FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
 	}
 
-	public static void copyDirectoryContent(String sourceDirectoryLocation, String destinationDirectoryLocation)
-			throws IOException {
+	public static void copyDirectoryContent(Resource resource, String destination) throws IOException {
 
-		System.out.println(sourceDirectoryLocation);
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		org.springframework.core.io.Resource[] resources = resolver.getResources(sourceDirectoryLocation);
-		File destinationDirectory = new File(destinationDirectoryLocation);
-		if (resources.length > 0) {
-			FileUtils.copyDirectory(resources[0].getFile(), destinationDirectory);
-		}
-	}
+		if (!resource.getFilename().contains(".cs") && !resource.getFilename().contains(".csproj")
+				&& !resource.getFilename().contains(".config")) {
+			System.out.println("Its a directory  ------ resource >>>" + resource.getFilename());
+			File dest = new File(destination, resource.getFilename());
+			dest.mkdir();
 
-	public static void copyfilesInFolder(String source, String destination) throws IOException {
-
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		org.springframework.core.io.Resource[] resources = resolver.getResources(source);
-		for (Resource resource : resources) {
+		} else {
 			InputStream is = resource.getInputStream();
 			try {
 				FileUtils.copyInputStreamToFile(is, new File(destination + File.separator + resource.getFilename()));
@@ -57,18 +49,39 @@ public class FileOperationUtils {
 				IOUtils.closeQuietly(is);
 			}
 		}
+
+	}
+
+	public static void copyfilesInFolder(String source, String destination) throws IOException {
+
+		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		org.springframework.core.io.Resource[] resources = resolver.getResources(source);
+		if (resources.length > 0) {
+			for (Resource resource : resources) {
+				InputStream is = resource.getInputStream();
+				try {
+					FileUtils.copyInputStreamToFile(is,
+							new File(destination + File.separator + resource.getFilename()));
+				} finally {
+					IOUtils.closeQuietly(is);
+				}
+			}
+		}
+
 	}
 
 	public static void listFilesInSubDirectory(String dir, Set<File> setOfFiles) {
-
 		File directory = new File(dir);
 		File[] listOfFiles = directory.listFiles();
-		for (File file : listOfFiles) {
-			if (file.isDirectory()) {
-				listFilesInSubDirectory(file.getAbsolutePath(), setOfFiles);
-			} else {
-				setOfFiles.add(file.getAbsoluteFile());
+		if (listOfFiles != null && listOfFiles.length > 0) {
+			for (File file : listOfFiles) {
+				if (file.isDirectory()) {
+					listFilesInSubDirectory(file.getAbsolutePath(), setOfFiles);
+				} else {
+					setOfFiles.add(file.getAbsoluteFile());
+				}
 			}
 		}
+
 	}
 }

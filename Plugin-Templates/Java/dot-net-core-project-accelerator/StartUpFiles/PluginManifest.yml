@@ -1,5 +1,5 @@
 ---
-name: BlueprintTemplate
+name: dot-net-core-project-accelerator
 # name is a mandatory field
 
 description: Template application for Run as Blueprint type Plugin
@@ -15,7 +15,7 @@ pluginType: runAsNewBlueprint
 landingPagePath: home
 #landingPagePath is a mandatory field and denotes the plugin application’s home endpoint to be called by UpShift platform
 
-resultPagePath: result
+resultPagePath: createProject
 # resultPagePath is a mandatory field and denotes the plugin application’s result endpoint to be called by UpShift platform
 
 authorName: plugin.author@cognizant.com
@@ -26,3 +26,6 @@ isEnabled: true
 
 version: 4.0.5
 # version is a mandatory field and it should be of major.minor.patch (4.0.5) format
+
+pluginSource: Custom
+pluginId: upshift.dotnetcore.project.accelerator
