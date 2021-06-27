@@ -3,12 +3,10 @@ package com.cognizant.dotnetcoreprojectaccelerator.controller;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.AUTHORIZATION;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.ERROR;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.FAIL;
-import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.IN_PROGRESS;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.PLUGIN_OUTPUT;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.PROCESS_INSTANCE_ID;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.PROCESS_INSTANCE_STATUS;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.STATUS;
-import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.SUCCESS;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.UPSHIFT_ORCHESTRATION_PLUGINS_STATUS_ENDPOINT;
 
 import java.io.IOException;

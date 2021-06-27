@@ -22,5 +22,12 @@
             </includes>
             <outputDirectory/>
         </fileSet>
+        <fileSet>
+            <directory>/</directory>
+            <includes>
+                <include>help.md</include>
+            </includes>
+            <outputDirectory/>
+        </fileSet>
     </fileSets>
 </assembly>

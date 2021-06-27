@@ -201,6 +201,11 @@ public class ApplicationService {
 					+ "Interception" + File.separator + "Attributes";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Attributes/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Interception" + File.separator + "Castle.Core.AsyncInterceptor";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Castle/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Configuration";
@@ -236,6 +241,41 @@ public class ApplicationService {
 					+ "Interception" + File.separator + "Internal" + File.separator + "Interfaces";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Interfaces/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Interception" + File.separator + "Strategies";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Strategies/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Logging" + File.separator + "Formatter";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Formatter/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Logging" + File.separator + "Interface";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Interface/*");
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Logging" + File.separator + "Models";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Models/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "RestService";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/RestService/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "WebService";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "WebService" + File.separator + "Configuration";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/Configuration/*");
 
 			
 			zipout = ZipUtils.zipFolder(outputFolder);
