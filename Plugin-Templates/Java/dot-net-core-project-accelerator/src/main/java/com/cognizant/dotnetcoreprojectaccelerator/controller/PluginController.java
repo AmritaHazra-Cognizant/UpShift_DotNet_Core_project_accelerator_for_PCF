@@ -59,6 +59,7 @@ public class PluginController {
         // TODO: Get more inputs from the UI as required
 
         LOGGER.info("Processing for processInstanceId " + processInstanceId);
+        System.out.println("SYSOUT === Processing for processInstanceId " + processInstanceId);
 
         Output output = outputService.findOne(processInstanceId);
         if (output == null) {
