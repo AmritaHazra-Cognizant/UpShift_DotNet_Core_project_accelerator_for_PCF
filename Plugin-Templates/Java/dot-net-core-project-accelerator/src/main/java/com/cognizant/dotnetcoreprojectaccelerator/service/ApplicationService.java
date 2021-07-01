@@ -44,7 +44,7 @@ public class ApplicationService {
 					+ "Implementations";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.API.BusinessLogic/Implementations/*");
-			
+
 			// Caching
 			folderPath = outputFolder + File.separator + applicationName + ".API.Caching";
 			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Caching/*");
@@ -97,7 +97,7 @@ public class ApplicationService {
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Providers" + File.separator + "Models";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Providers/Model/*");
+					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Providers/Models/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Proxy";
@@ -119,8 +119,6 @@ public class ApplicationService {
 					+ "Implementations";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.API.DBAccess/Implementations/*");
-
-			
 
 			// Logging
 			folderPath = outputFolder + File.separator + applicationName + ".API.Logging";
@@ -178,14 +176,11 @@ public class ApplicationService {
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.API.Web/Security/Service/*");
 
-			
-
 			// Framework
 			folderPath = outputFolder + File.separator + applicationName + ".Framework";
 			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.Framework/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.Framework.csproj",
 					folderPath + File.separator + applicationName + ".Framework.csproj");
-
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Caching"
 					+ File.separator + "CoreCaching";
@@ -198,10 +193,15 @@ public class ApplicationService {
 					"classpath*:dotnet-code-content/DotNetCore.Framework/ExceptionHandling/Models/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Interception";
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/*");
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Attributes";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Attributes/*");
-			
+
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Castle.Core.AsyncInterceptor";
 			generateSubDirectories(entity, folderPath,
@@ -228,6 +228,11 @@ public class ApplicationService {
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Interfaces/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
+					+ "Interception" + File.separator + "Internal" ;
+			generateSubDirectories(entity, folderPath,
+					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/*");
+			
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Internal" + File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Configuration/*");
@@ -241,43 +246,41 @@ public class ApplicationService {
 					+ "Interception" + File.separator + "Internal" + File.separator + "Interfaces";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Interfaces/*");
-			
+
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Strategies";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Strategies/*");
-			
-			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
-					+ "Logging" + File.separator + "Formatter";
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
+					+ File.separator + "Formatter";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Formatter/*");
-			
-			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
-					+ "Logging" + File.separator + "Interface";
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
+					+ File.separator + "Interface";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Interface/*");
 
-			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
-					+ "Logging" + File.separator + "Models";
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
+					+ File.separator + "Models";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Models/*");
-			
+
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "RestService";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/RestService/*");
-			
-			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
-					+ "WebService";
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "WebService";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/*");
-			
-			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
-					+ "WebService" + File.separator + "Configuration";
+
+			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "WebService"
+					+ File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
 					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/Configuration/*");
 
-			
 			zipout = ZipUtils.zipFolder(outputFolder);
 		} catch (Exception ex) {
 			throw ex;
