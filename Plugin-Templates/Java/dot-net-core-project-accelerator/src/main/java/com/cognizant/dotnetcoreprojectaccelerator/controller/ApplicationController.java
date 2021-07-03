@@ -9,7 +9,7 @@ import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.PRO
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.STATUS;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.UPSHIFT_ORCHESTRATION_PLUGINS_STATUS_ENDPOINT;
 
-import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,111 +26,103 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
+import com.cognizant.dotnetcoreprojectaccelerator.constants.Constants;
 import com.cognizant.dotnetcoreprojectaccelerator.model.MigratorEntity;
 import com.cognizant.dotnetcoreprojectaccelerator.model.Output;
 import com.cognizant.dotnetcoreprojectaccelerator.service.ApplicationService;
 import com.cognizant.dotnetcoreprojectaccelerator.service.CommonService;
 import com.cognizant.dotnetcoreprojectaccelerator.service.OutputService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
 @Controller
 @RequestMapping("/")
 public class ApplicationController {
-	
-	private Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
-	
-	@Value("${upshiftUrl:http://localhost:8088}")
-    private String upshiftUrl;
 
-    @Autowired
-    private RestTemplate restTemplate;
-	
+	private Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class);
+
+	@Value("${upshiftUrl:http://localhost:8088}")
+	private String upshiftUrl;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@Autowired
 	private ApplicationService service;
-	
+
 	@Autowired
-    private OutputService outputService;
-	
+	private OutputService outputService;
+
 	@Autowired
-    private CommonService commonService;
+	private CommonService commonService;
+	
+	public void initiateResponseToUpShift(String processInstanceId, String applicationName) {
+		LOGGER.info("Starting to send status message to UpShift (Orchestration Engine) for processInstanceId "
+				+ processInstanceId);
 
+		JsonObject responseBodyJson = new JsonObject();
+		responseBodyJson.addProperty(PROCESS_INSTANCE_ID, processInstanceId);
 
+		Output output = outputService.findOne(processInstanceId);
+		String status = output.getStatus();
 
-	@RequestMapping(path = "/home",  method = RequestMethod.GET)
-	public void initaiteProcess(/*@PathVariable("processInstanceId") String processInstanceId,*/ HttpServletResponse response) throws IOException {
-		
-		//System.out.println("processInstanceId >>>"+processInstanceId);
-		/*Output output = outputService.findOne(processInstanceId);
-        if (output == null) {
-            try {
-                LOGGER.info("Initializing flow for processInstanceId " + processInstanceId);
-                output = new Output(processInstanceId);
-                output.setStatus(IN_PROGRESS);
-                output = outputService.save(output);
-                LOGGER.info("Initialized flow for processInstanceId " + processInstanceId);
+		JsonObject pluginoutput = new JsonObject();
+		pluginoutput.addProperty("Process Instance ID", processInstanceId);
+		pluginoutput.addProperty("Status", status);
+		pluginoutput.addProperty("Date", Instant.now().toString());
+		pluginoutput.addProperty("Output File Name", applicationName + "-WEBAPI.zip");
 
-                // Execute the plugin
-               // pluginExecutor.execute(output);
+		responseBodyJson.add(PLUGIN_OUTPUT, pluginoutput);
+		responseBodyJson.addProperty(STATUS, status);
+		if (FAIL.equalsIgnoreCase(status)) {
+			responseBodyJson.addProperty(PROCESS_INSTANCE_STATUS, ERROR);
+		}
 
-                output.setStatus(SUCCESS);
-            } catch (Exception e) {
-                LOGGER.error("Exception while processing.", e);
-                output.setStatus(FAIL);
-            }
-            outputService.save(output);
+		String authorizationString = commonService.getAuthorizationToken();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add(AUTHORIZATION, authorizationString);
 
-            // Inform UpShift that the process has been completed for this processInstanceId
-            initiateResponseToUpShift(processInstanceId);
+		String postStatusUrl = upshiftUrl.concat(UPSHIFT_ORCHESTRATION_PLUGINS_STATUS_ENDPOINT).concat("/")
+				.concat(processInstanceId);
+		HttpEntity<String> requestBody = new HttpEntity<>(responseBodyJson.toString(), httpHeaders);
+		ResponseEntity<String> response = restTemplate.postForEntity(postStatusUrl, requestBody, String.class);
 
-            LOGGER.info("Finished processing for processInstanceId " + processInstanceId);
-        } else {
-            LOGGER.error("Flow for processInstanceId " + processInstanceId + " already initialized");
-        }*/
-		response.sendRedirect("/accelerator");
+		LOGGER.info("Status message to UpShift (Orchestration Engine) has been sent. " + responseBodyJson);
 	}
-	
-	@PostMapping("postResultStatusToUpShift")
-    public void initiateResponseToUpShift(@PathVariable("processInstanceId") String processInstanceId) {
-        LOGGER.info("Starting to send status message to UpShift (Orchestration Engine) for processInstanceId " + processInstanceId);
 
-        JsonObject responseBodyJson = new JsonObject();
-        responseBodyJson.addProperty(PROCESS_INSTANCE_ID, processInstanceId);
+	@RequestMapping(path = "/result")
+	public String getResult(HttpServletRequest request, Model model) throws JsonMappingException, JsonProcessingException {
 
-        Output output = outputService.findOne(processInstanceId);
-        String status = output.getStatus();
+		String processInstanceId = request.getParameter("processInstanceId");
+		LOGGER.info("In result endpoint processInstanceId " + processInstanceId);
+		
+		Output output = outputService.findOne(processInstanceId);
+		ObjectMapper mapper = new ObjectMapper();
+		MigratorEntity entity = mapper.readValue(output.getEntityString(), MigratorEntity.class);
+		List<String> commonFramework = new ArrayList<>();
+		commonFramework.add("Logging");
+		commonFramework.add("JWT");
+		commonFramework.add("Exception Handling");
+		commonFramework.add("Caching");
+		commonFramework.add("SSO");
+		// commonFramework.add("Health Check");
+		commonFramework.add("Swagger Support");
+		entity.setCommonFrameworks(commonFramework);
+		model.addAttribute("entity", entity);
+		return "result";
+	}
 
-        JsonObject pluginoutput = new JsonObject();
-        pluginoutput.addProperty("key", "value");
-        // TODO: Edit/Add more values in pluginOutput object, as needed
-
-        responseBodyJson.add(PLUGIN_OUTPUT, pluginoutput);
-        responseBodyJson.addProperty(STATUS, status);
-        if (FAIL.equalsIgnoreCase(status)) {
-            responseBodyJson.addProperty(PROCESS_INSTANCE_STATUS, ERROR);
-        }
-
-        String authorizationString = commonService.getAuthorizationToken();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(AUTHORIZATION, authorizationString);
-
-        String postStatusUrl = upshiftUrl
-                .concat(UPSHIFT_ORCHESTRATION_PLUGINS_STATUS_ENDPOINT)
-                .concat("/")
-                .concat(processInstanceId);
-        HttpEntity<String> requestBody = new HttpEntity<>(responseBodyJson.toString(), httpHeaders);
-        ResponseEntity<String> response = restTemplate.postForEntity( postStatusUrl, requestBody, String.class);
-
-        LOGGER.info("Status message to UpShift (Orchestration Engine) has been sent. " + responseBodyJson);
-    }
-	
 	@RequestMapping(path = "/accelerator")
-	public String getMigrator(Model model) {
+	public String getMigrator(HttpServletRequest request, Model model) {
+
+		String processInstanceId = request.getParameter("processInstanceId");
+		LOGGER.info("In accelerator endpoint processInstanceId " + processInstanceId);
 		MigratorEntity entity = new MigratorEntity();
 		List<String> commonFramework = new ArrayList<>();
 		commonFramework.add("Logging");
@@ -138,26 +130,62 @@ public class ApplicationController {
 		commonFramework.add("Exception Handling");
 		commonFramework.add("Caching");
 		commonFramework.add("SSO");
-		//commonFramework.add("Health Check");
+		// commonFramework.add("Health Check");
 		commonFramework.add("Swagger Support");
 		entity.setCommonFrameworks(commonFramework);
+		entity.setProcessInstanceId(processInstanceId);
 		model.addAttribute("entity", entity);
 		return "migrator";
 	}
-
+	
 	@RequestMapping(path = "/createProject", method = RequestMethod.POST)
 	public void getMigrator(HttpServletRequest request, HttpServletResponse response, MigratorEntity entity)
 			throws Exception {
 
-		System.out.println(entity.toString());
+		LOGGER.info("Entity Info "+entity.toString());
 
-		String applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
-		byte[] output = service.generateProject(entity);
-		response.addHeader("Content-Disposition",
-				"attachment; filename=\"" + applicationName + "-WEBAPI" + ".zip\"");
-		response.setContentType("application/zip");
-		response.getOutputStream().write(output);
-		response.getOutputStream().flush();
+		String processInstanceId = entity.getProcessInstanceId();
+		String applicationName = null;
+		if (processInstanceId != null) {
+
+			Output output = outputService.findOne(processInstanceId);
+			if (output == null) {
+				try {
+					LOGGER.info("Initializing flow for processInstanceId " + processInstanceId);
+					output = new Output(processInstanceId);
+					output.setStatus(Constants.IN_PROGRESS);
+					output = outputService.save(output);
+					LOGGER.info("Initialized flow for processInstanceId " + processInstanceId);
+
+					// Execute the plugin
+					applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
+					byte[] zipOutput = service.generateProject(entity);
+					
+					response.addHeader("Content-Disposition",
+							"attachment; filename=\"" + applicationName + "-WEBAPI" + ".zip\"");
+					response.setContentType("application/zip");
+					response.getOutputStream().write(zipOutput);
+					response.getOutputStream().flush();
+
+					ObjectMapper mapper = new ObjectMapper();
+					String entityStr = mapper.writeValueAsString(entity);
+
+					output.setStatus(Constants.SUCCESS);
+					output.setEntityString(entityStr);
+				} catch (Exception e) {
+					LOGGER.error("Exception while processing.", e);
+					output.setStatus(FAIL);
+				}
+				outputService.save(output);
+
+				// Inform UpShift that the process has been completed for this processInstanceId
+				initiateResponseToUpShift(processInstanceId, applicationName);
+
+				LOGGER.info("Finished processing for processInstanceId " + processInstanceId);
+			} else {
+				LOGGER.error("Flow for processInstanceId " + processInstanceId + " already initialized");
+			}
+		}
 	}
 
 }
