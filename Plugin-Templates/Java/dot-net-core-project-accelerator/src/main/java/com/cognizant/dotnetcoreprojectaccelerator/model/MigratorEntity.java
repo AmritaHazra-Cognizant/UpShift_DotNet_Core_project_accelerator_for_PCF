@@ -13,6 +13,7 @@ public class MigratorEntity {
 	public String serverType;
 	public String enableDockerSupport;
 	public List<String> commonFrameworks;
+	public String processInstanceId;
 	
 	public String getApplnName() {
 		return applnName;
@@ -86,12 +87,20 @@ public class MigratorEntity {
 		this.commonFrameworks = commonFrameworks;
 	}
 
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
 	@Override
 	public String toString() {
 		return "MigratorEntity [applnName=" + applnName + ", projectType=" + projectType + ", nameSpace=" + nameSpace
 				+ ", version=" + version + ", dbName=" + dbName + ", externalSrvcType=" + externalSrvcType
 				+ ", serverType=" + serverType + ", enableDockerSupport=" + enableDockerSupport + ", commonFrameworks="
-				+ commonFrameworks + "]";
+				+ commonFrameworks + ", processInstanceId=" + processInstanceId + "]";
 	}
 	
 	

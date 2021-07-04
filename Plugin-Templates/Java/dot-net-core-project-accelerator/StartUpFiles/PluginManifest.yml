@@ -5,9 +5,9 @@ description: This application generates enterprise standard .NET Core Project sc
 
 pluginType: runAsNewBlueprint
 
-landingPagePath: home
+landingPagePath: accelerator
 
-resultPagePath: createProject
+resultPagePath: result
 
 authorName: Amrita.Hazra@cognizant.com , SandipKumar.Bhunia@cognizant.com
 

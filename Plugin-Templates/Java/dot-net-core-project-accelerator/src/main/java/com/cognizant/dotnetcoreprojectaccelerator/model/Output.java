@@ -10,6 +10,8 @@ public class Output {
 	private String processInstanceId;
 
 	private String status;
+	
+	private String entityString;
 
 	public Output() {
 	}
@@ -45,8 +47,17 @@ public class Output {
 		this.status = status;
 	}
 
+	public String getEntityString() {
+		return entityString;
+	}
+
+	public void setEntityString(String entityString) {
+		this.entityString = entityString;
+	}
+
 	@Override
 	public String toString() {
-		return "Output{" + "processInstanceId='" + processInstanceId + '\'' + "status='" + status + '\'' + '}';
+		return "Output [processInstanceId=" + processInstanceId + ", status=" + status + ", entityString="
+				+ entityString + "]";
 	}
 }

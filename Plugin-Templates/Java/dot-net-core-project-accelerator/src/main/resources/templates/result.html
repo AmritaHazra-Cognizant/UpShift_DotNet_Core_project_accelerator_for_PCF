@@ -10,21 +10,11 @@
 	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 	
 </head>
-<script>
-$(document).ready(function() {
- $('#applnName').on('change', function() {
-	 var value = $(this).val().replace(/\s+/g, '.');
-	 //(" ", ".");
-   $('#nameSpace').val(value);
-   //alert("The URL of this page is: " + window.location.href);
- }); 
-});
-</script>
 <body style="background-color:#EAFAF1;">
 
 	<div class="container">
 	<h1 class="text-center text"> .NET Core Project Generator v1.0.0</h1>
-		<form action="#" th:action="@{/createProject}" th:object="${entity}" method="post">
+		<form action="#" th:action="@{/download}" th:object="${entity}" method="post">
 			<div class="">
 				<table class="table table-hover">
 					<thead></thead>
@@ -34,8 +24,7 @@ $(document).ready(function() {
 								<label class="control-label" for="applnName">Application Name :</label>
 							</td>
 							<td width="60%">
-								<input type="text" th:field="*{applnName}" class="form-control" id="applnName" placeholder="Application Name"  th:required="required"/>
-								<!-- <input type="text" th:field="*{applnName}" th:value="${#strings.replace( ${entity.applnName},' ','.')}" class="form-control" id="applnName" placeholder="Application Name"  th:required="required"/> -->
+								<input type="text" th:field="*{applnName}" class="form-control" id="applnName" disabled= "true"/>
 								
 							</td>
 							<td width="20%" rowspan="7"  align="center">
@@ -61,10 +50,7 @@ $(document).ready(function() {
 								<label class="control-label" for="projectType">Project Type :</label>
 							</td>
 							<td width="40%">
-								<!-- <input type="text" th:field="*{projectType}" class="form-control" id="projectType" placeholder="Project Type" th:required="required"/> -->
-								<select th:field="*{projectType}" class="form-control" th:required="required">
-								    <option value="webapi" >WEB API</option>
-								</select>
+								<input type="text" th:field="*{projectType}" class="form-control" id="projectType" disabled= "true"/>
 							</td>
 						</tr>
 						<tr>
@@ -72,7 +58,7 @@ $(document).ready(function() {
 								<label class="control-label" for="nameSpace">NameSpace :</label>
 							</td>
 							<td width="40%">
-								<input type="text" th:name="nameSpace" th:field="*{nameSpace}" class="form-control" id="nameSpace" placeholder="NameSpace" />
+								<input type="text" th:name="nameSpace" th:field="*{nameSpace}" class="form-control" id="nameSpace" disabled= "true"/>
 							</td>
 						</tr>
 						<tr>
@@ -80,10 +66,7 @@ $(document).ready(function() {
 								<label class="control-label" for="version">.NET Core Version :</label>
 							</td>
 							<td width="40%">
-								<!-- <input type="text" th:field="*{version}" class="form-control" id="version" placeholder="Version" th:required="required" /> -->
-								<select th:field="*{version}" class="form-control" th:required="required">
-								    <option value="core3.1" >.NET Core 3.1</option>
-								</select>
+								<input type="text" th:field="*{version}" class="form-control" id="version" disabled= "true"/>
 							</td>
 						</tr>
 						<tr>
@@ -91,11 +74,7 @@ $(document).ready(function() {
 								<label class="control-label" for="dbName">Database :</label>
 							</td>
 							<td width="40%">
-								<!-- <input type="text" th:field="*{dbName}" class="form-control" id="dbName" placeholder="Database Name" /> -->
-								<select th:field="*{dbName}" class="form-control">
-								    <option th:value="'SQLServer'" th:text="SQL-Server"></option>
-								    <option th:value="'Oracle'" th:text="Oracle" ></option>
-								</select>
+								<input type="text" th:field="*{dbName}" class="form-control" id="dbName" disabled= "true"/>
 							</td>
 						</tr>
 						<tr>
@@ -103,12 +82,7 @@ $(document).ready(function() {
 								<label class="control-label" for="externalSrvcType">External Service Type :</label>
 							</td>
 							<td width="40%">
-								<!-- <input type="text" th:field="*{externalSrvcType}" class="form-control" id="externalSrvcType" placeholder="External Service Type" /> -->
-								<select th:field="*{externalSrvcType}" class="form-control">
-								    <option th:value="SOAP" th:text="SOAP" ></option>
-								    <option th:value="REST" th:text="REST" ></option>
-								    <option th:value="Both" th:text="Both" ></option>
-								</select>
+								<input type="text" th:field="*{externalSrvcType}" class="form-control" id="externalSrvcType" disabled= "true"/>
 							</td>
 						</tr>
 						<tr>
@@ -116,28 +90,22 @@ $(document).ready(function() {
 								<label class="control-label" for="serverType">Server Type :</label>
 							</td>
 							<td width="40%">
-								<!-- <input type="text" th:field="*{serverType}" class="form-control" id="serverType" placeholder="Server Type" /> -->
-								<select th:field="*{serverType}" class="form-control">
-									<option value="onPremises" >On Premises</option>
-								    <option value="cloud">Cloud Compatible</option>
-								</select>
-								
+								<input type="text" th:field="*{serverType}" class="form-control" id="serverType" disabled= "true"/>
 							</td>
 						</tr>
 						<input type="hidden" th:field="*{processInstanceId}" id="processInstanceId"/>
 					</tbody>
 				</table>
-				<table align="center">
+				<!-- <table align="center">
                 <tr>
 					<td></td>
 					<td colspan="4" >
 						<div>
-		                     <input type="submit" class="btn btn-primary mx-auto d-block" value=" Submit " />
-		                     <input type="reset" class="btn btn-primary mx-auto d-block" value=" Reset " />
+		                     <input type="submit" class="btn btn-primary mx-auto d-block" value=" Download " />
 		                 </div>
 					</td>
 				</tr>
-               </table>
+               </table> -->
             </div>
 		</form>
 	</div>
