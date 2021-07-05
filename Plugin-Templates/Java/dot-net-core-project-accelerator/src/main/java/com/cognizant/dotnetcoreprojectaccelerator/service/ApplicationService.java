@@ -31,255 +31,255 @@ public class ApplicationService {
 
 			// BusinessLogic
 			folderPath = outputFolder + File.separator + applicationName + ".API.BusinessLogic";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.BusinessLogic/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.BusinessLogic/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.BusinessLogic.csproj",
 					folderPath + File.separator + applicationName + ".API.BusinessLogic.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.BusinessLogic" + File.separator
 					+ "Contracts";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.BusinessLogic/Contracts/*");
+					"classpath*:content/DotNetCore.API.BusinessLogic/Contracts/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.BusinessLogic" + File.separator
 					+ "Implementations";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.BusinessLogic/Implementations/*");
+					"classpath*:content/DotNetCore.API.BusinessLogic/Implementations/*");
 
 			// Caching
 			folderPath = outputFolder + File.separator + applicationName + ".API.Caching";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Caching/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.Caching/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.Caching.csproj",
 					folderPath + File.separator + applicationName + ".API.Caching.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Caching" + File.separator
 					+ "MemoryCache";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Caching/MemoryCache/*");
+					"classpath*:content/DotNetCore.API.Caching/MemoryCache/*");
 
 			// CommonUtils
 			folderPath = outputFolder + File.separator + applicationName + ".API.CommonUtils";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.CommonUtils/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.CommonUtils/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.CommonUtils.csproj",
 					folderPath + File.separator + applicationName + ".API.CommonUtils.csproj");
 
 			// Contract
 			folderPath = outputFolder + File.separator + applicationName + ".API.Contract";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Contract/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.Contract/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.Contract.csproj",
 					folderPath + File.separator + applicationName + ".API.Contract.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Contract" + File.separator
 					+ "ResponseModels";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Contract/ResponseModels/*");
+					"classpath*:content/DotNetCore.API.Contract/ResponseModels/*");
 
 			// DataService
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.DataService/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.DataService/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.DataService.csproj",
 					folderPath + File.separator + applicationName + ".API.DataService.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Contracts";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Contracts/*");
+					"classpath*:content/DotNetCore.API.DataService/Contracts/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Implementations";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Implementations/*");
+					"classpath*:content/DotNetCore.API.DataService/Implementations/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Providers" + File.separator + "Api";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Providers/Api/*");
+					"classpath*:content/DotNetCore.API.DataService/Providers/Api/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Providers" + File.separator + "Models";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Providers/Models/*");
+					"classpath*:content/DotNetCore.API.DataService/Providers/Models/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DataService" + File.separator
 					+ "Proxy";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DataService/Proxy/*");
+					"classpath*:content/DotNetCore.API.DataService/Proxy/*");
 
 			// DBAccess
 			folderPath = outputFolder + File.separator + applicationName + ".API.DBAccess";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.DBAccess/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.DBAccess/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.DBAccess.csproj",
 					folderPath + File.separator + applicationName + ".API.DBAccess.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DBAccess" + File.separator
 					+ "Contracts";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DBAccess/Contracts/*");
+					"classpath*:content/DotNetCore.API.DBAccess/Contracts/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.DBAccess" + File.separator
 					+ "Implementations";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.DBAccess/Implementations/*");
+					"classpath*:content/DotNetCore.API.DBAccess/Implementations/*");
 
 			// Logging
 			folderPath = outputFolder + File.separator + applicationName + ".API.Logging";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Logging/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.Logging/*");
 
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.Logging.csproj",
 					folderPath + File.separator + applicationName + ".API.Logging.csproj");
 
 			// Tests
 			folderPath = outputFolder + File.separator + applicationName + ".API.Tests";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Tests/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.Tests/*");
 
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.Tests.csproj",
 					folderPath + File.separator + applicationName + ".API.Tests.csproj");
 
 			// Web
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.API.Web/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.API.Web/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.API.Web.csproj",
 					folderPath + File.separator + applicationName + ".API.Web.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator
 					+ "ActionFilters";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/ActionFilters/*");
+					"classpath*:content/DotNetCore.API.Web/ActionFilters/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Controllers";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Controllers/*");
+					"classpath*:content/DotNetCore.API.Web/Controllers/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Extensions";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Extensions/*");
+					"classpath*:content/DotNetCore.API.Web/Extensions/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Middleware";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Middleware/*");
+					"classpath*:content/DotNetCore.API.Web/Middleware/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Properties";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Properties/*");
+					"classpath*:content/DotNetCore.API.Web/Properties/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Security"
 					+ File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Security/Configuration/*");
+					"classpath*:content/DotNetCore.API.Web/Security/Configuration/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Security"
 					+ File.separator + "Implementation";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Security/Implementation/*");
+					"classpath*:content/DotNetCore.API.Web/Security/Implementation/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".API.Web" + File.separator + "Security"
 					+ File.separator + "Service";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.API.Web/Security/Service/*");
+					"classpath*:content/DotNetCore.API.Web/Security/Service/*");
 
 			// Framework
 			folderPath = outputFolder + File.separator + applicationName + ".Framework";
-			generateSubDirectories(entity, folderPath, "classpath*:dotnet-code-content/DotNetCore.Framework/*");
+			generateSubDirectories(entity, folderPath, "classpath*:content/DotNetCore.Framework/*");
 			renameCsProjFile(folderPath + File.separator + "DotNetCore.Framework.csproj",
 					folderPath + File.separator + applicationName + ".Framework.csproj");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Caching"
 					+ File.separator + "CoreCaching";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Caching/CoreCaching/*");
+					"classpath*:content/DotNetCore.Framework/Caching/CoreCaching/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "ExceptionHandling" + File.separator + "Models";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/ExceptionHandling/Models/*");
+					"classpath*:content/DotNetCore.Framework/ExceptionHandling/Models/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/*");
+					"classpath*:content/DotNetCore.Framework/Interception/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Attributes";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Attributes/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Attributes/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Castle.Core.AsyncInterceptor";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Castle/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Castle/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Configuration/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Configuration/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Exceptions";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Exceptions/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Exceptions/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Extensions";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Extensions/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Extensions/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Interfaces";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Interfaces/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Interfaces/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Internal" ;
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Internal/*");
 			
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Internal" + File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Configuration/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Internal/Configuration/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Internal" + File.separator + "Extensions";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Extensions/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Internal/Extensions/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Internal" + File.separator + "Interfaces";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Internal/Interfaces/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Internal/Interfaces/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "Interception" + File.separator + "Strategies";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Interception/Strategies/*");
+					"classpath*:content/DotNetCore.Framework/Interception/Strategies/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
 					+ File.separator + "Formatter";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Formatter/*");
+					"classpath*:content/DotNetCore.Framework/Logging/Formatter/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
 					+ File.separator + "Interface";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Interface/*");
+					"classpath*:content/DotNetCore.Framework/Logging/Interface/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "Logging"
 					+ File.separator + "Models";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/Logging/Models/*");
+					"classpath*:content/DotNetCore.Framework/Logging/Models/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator
 					+ "RestService";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/RestService/*");
+					"classpath*:content/DotNetCore.Framework/RestService/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "WebService";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/*");
+					"classpath*:content/DotNetCore.Framework/WebService/*");
 
 			folderPath = outputFolder + File.separator + applicationName + ".Framework" + File.separator + "WebService"
 					+ File.separator + "Configuration";
 			generateSubDirectories(entity, folderPath,
-					"classpath*:dotnet-code-content/DotNetCore.Framework/WebService/Configuration/*");
+					"classpath*:content/DotNetCore.Framework/WebService/Configuration/*");
 
 			zipout = ZipUtils.zipFolder(outputFolder);
 		} catch (Exception ex) {
@@ -295,7 +295,7 @@ public class ApplicationService {
 	private void generateRootFolder(MigratorEntity entity, String outputFolder) throws IOException {
 
 		String applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
-		FileOperationUtils.copyfilesInFolder("classpath*:dotnet-code-content/sln/*", outputFolder);
+		FileOperationUtils.copyfilesInFolder("classpath*:content/sln/*", outputFolder);
 		FileUtils.moveFile(new File(outputFolder + File.separator + "DotNetCore.WebAPI.Template.sln"),
 				new File(outputFolder + File.separator + applicationName + ".WebAPI.Template.sln"));
 		FileUtils.moveFile(new File(outputFolder + File.separator + "gitignore.txt"),
