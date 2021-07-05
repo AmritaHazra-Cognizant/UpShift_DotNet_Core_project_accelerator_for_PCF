@@ -3,16 +3,11 @@ version: 2.1
 jobs:
   build:
     description: build
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/dot-net-core-project-accelerator/
     docker:
       - image: maven:3.6.3-jdk-8
     steps:
       - checkout
-      - run:
-          name: Build client app
-          command: >
-            cd ui && 
-             npm run build -- --prod
       - run:
           name: Build java app
           command: mvn clean install -Dmaven.test.skip=true
