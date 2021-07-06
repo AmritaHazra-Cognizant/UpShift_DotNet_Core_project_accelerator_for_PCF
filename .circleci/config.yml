@@ -134,7 +134,7 @@ workflows:
       - request-promote-to-prod:
           type: approval
           requires:
-            - build_and_publish
+            - build-and-zip
           filters:
             branches:
               only:
