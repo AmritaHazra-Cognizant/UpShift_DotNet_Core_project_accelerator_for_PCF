@@ -3,24 +3,24 @@ version: 2.1
 jobs:
   build:
     description: build
-    working_directory: ~/dot-net-core-project-accelerator/
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     docker:
       - image: maven:3.6.3-jdk-8
     steps:
       - checkout
       - run:
           name: Build java app
-          command: mvn clean install -Dmaven.test.skip=true
+          command: cd Plugin-Templates/Java/dot-net-core-project-accelerator && mvn clean install -Dmaven.test.skip=true
   build-and-zip:
     description: Build the app and zip the output
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     docker:
       - image: maven:3.6.3-jdk-8
     steps:
       - checkout
       - run:
           name: Build java app
-          command: mvn clean install -Dmaven.test.skip=true
+          command: cd Plugin-Templates/Java/dot-net-core-project-accelerator && mvn clean install -Dmaven.test.skip=true
       - run:
           name: Zip the build output
           command: ./.circleci/setup_zip_build_output.sh
@@ -34,7 +34,7 @@ jobs:
             ./jfrog rt u package-output/dot-net-core-project-accelerator_$CIRCLE_BUILD_NUM.zip /generic-dev-local/FEGO/dot-net-core-project-accelerator/ --build-name=dot-net-core-project-accelerator --build-number=$CIRCLE_BUILD_NUM
   promote-to-prod:
     description: Promote the build to production artifactory
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     docker:
       - image: maven:3.6.3-jdk-8
     steps:
@@ -45,7 +45,7 @@ jobs:
   
   merge-integration-to-master:
     description: Merge integration branch to master
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     docker:
       - image: alpine/git
     steps:
@@ -67,7 +67,7 @@ jobs:
         auth:
           username: $ARTIFACTORY_USER
           password: $ARTIFACTORY_TOKEN
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     steps:
       - checkout
       - setup_remote_docker
@@ -89,7 +89,7 @@ jobs:
   blackduck_scan:
     docker:
       - image: maven:3.6.3-jdk-8
-    working_directory: ~/dot-net-core-project-accelerator
+    working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     steps:
       - checkout
       - attach_workspace:
@@ -98,17 +98,12 @@ jobs:
           name: Setup Dependencies
           command: ./.circleci/setup_dependencies.sh
       - run:
-          name: Install npm packages
-          command: cd ui && npm install
-      - run:
           name: Start the Synopsys Detect scan
           command: |
             bash ./.circleci/detect.sh \
             --blackduck.url=$BLACKDUCK_URL \
             --blackduck.api.token=$BLACKDUCK_TOKEN \
             --detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING \
-            --detect.npm.path=/usr/bin/npm \
-            --detect.npm.node.path=/usr/bin/node \
             --detect.project.name="dot-net-core-project-accelerator" \
             --detect.project.version.name="19411.1" \
             --detect.risk.report.pdf=true \
@@ -116,9 +111,9 @@ jobs:
             --detect.notices.report=true \
             --detect.notices.report.path="~/dot-net-core-project-accelerator/report"
       - store_artifacts:
-          path: ~/dot-net-core-project-accelerator/report
+          path: ~/UpShift_DotNet_Core_project_accelerator_for_PCF/report
 workflows:
-  build_and_publish:
+  build-and-zip:
     jobs:
       - build:
           filters:
@@ -129,7 +124,7 @@ workflows:
       - request-promote-to-prod:
           type: approval
           requires:
-            - build_and_publish
+            - build-and-zip
           filters:
             branches:
               only:
@@ -157,12 +152,12 @@ workflows:
       - request-to-move-integration-build-to-artifactory:
           type: approval
           requires:
-            - build_and_publish
+            - build-and-zip
           filters:
             branches:
               only:
                 - Integration  
-      - build_and_publish:
+      - build-and-zip:
           name: move-integration-build-to-artifactory
           context: Codehub-Common
           requires:
