@@ -8,6 +8,7 @@ mkdir -p package-output
 echo "---------------------Copying dot-net-core-project-accelerator to package-output started---------------------"
 echo "Contents of package-output/"
 ls -lrt package-output/
+cd Plugin-Templates/Java/dot-net-core-project-accelerator
 find target -type f -name *dot-net-core-project-accelerator-0.0.1-SNAPSHOT.jar -exec cp "{}" package-output/dot-net-core-project-accelerator-0.0.1-SNAPSHOT.jar \;
 echo "---------------------Copying dot-net-core-project-accelerator to package-output completed---------------------"
 echo
