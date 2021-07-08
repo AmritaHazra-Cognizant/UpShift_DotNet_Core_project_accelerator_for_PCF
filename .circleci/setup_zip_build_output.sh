@@ -15,13 +15,14 @@ echo
 echo "Contents of package-output"
 ls -lrt package-output/
 echo
-echo "---------------------Copying Start.sh/Start.bat to package-output started---------------------"
+echo "---------------------Copying StartUpFiles contents to package-output started---------------------"
 echo
-cp -r Start.bat package-output/
-cp -r Start.sh package-output/
+#cp -r Start.bat package-output/
+#cp -r Start.sh package-output/
+cp -r StartUpFiles/* package-output/
 echo "Contents of package-output/"
 ls -lrt package-output/
-echo "---------------------Copying Start.sh/Start.bat to package-output completed---------------------"
+echo "---------------------Copying StartUpFiles contents to package-output completed---------------------"
 echo
 
 pushd package-output
