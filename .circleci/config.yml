@@ -36,7 +36,7 @@ jobs:
     description: Promote the build to production artifactory
     working_directory: ~/UpShift_DotNet_Core_project_accelerator_for_PCF
     docker:
-      - image: maven:3.6.3-jdk-8
+      - image: circleci/node:9.11.1-stretch
     steps:
       - checkout
       - run:
