@@ -31,6 +31,7 @@ jobs:
           name: Push to Artifactory
           command: |
             ./jfrog rt c --url ${ARTIFACTORY_URL}artifactory --user $ARTIFACTORY_USER --apikey $ARTIFACTORY_TOKEN --interactive=false
+            cd Plugin-Templates/Java/dot-net-core-project-accelerator
             ./jfrog rt u package-output/dot-net-core-project-accelerator_$CIRCLE_BUILD_NUM.zip /generic-dev-local/FEGO/dot-net-core-project-accelerator/ --build-name=dot-net-core-project-accelerator --build-number=$CIRCLE_BUILD_NUM
   promote-to-prod:
     description: Promote the build to production artifactory
