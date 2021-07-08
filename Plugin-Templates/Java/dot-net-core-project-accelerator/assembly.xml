@@ -22,12 +22,12 @@
             </includes>
             <outputDirectory/>
         </fileSet>
-        <fileSet>
-            <directory>/</directory>
+        <!--<fileSet>
+            <directory>/Plugin-Templates/Java/dot-net-core-project-accelerator</directory>
             <includes>
                 <include>help.md</include>
             </includes>
             <outputDirectory/>
-        </fileSet>
+        </fileSet>-->
     </fileSets>
 </assembly>
