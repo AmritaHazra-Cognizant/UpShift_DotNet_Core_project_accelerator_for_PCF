@@ -22,6 +22,11 @@ jobs:
           name: Build java app
           command: cd Plugin-Templates/Java/dot-net-core-project-accelerator && mvn clean install -Dmaven.test.skip=true
       - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export pluginId=${DotNetCoreProjectAcceleratorPluginId}'>> $BASH_ENV
+            source $BASH_ENV
+      - run:
           name: Zip the build output
           command: ./.circleci/setup_zip_build_output.sh
       - run:
@@ -161,7 +166,9 @@ workflows:
                 - Integration  
       - build-and-zip:
           name: move-integration-build-to-artifactory
-          context: Codehub-Common
+          context: 
+            - Codehub-Common
+            - Upshift-Common
           requires:
             - request-to-move-integration-build-to-artifactory
           filters:
