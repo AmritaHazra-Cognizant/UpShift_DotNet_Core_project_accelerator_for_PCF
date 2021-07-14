@@ -199,7 +199,9 @@ workflows:
               only:
                 - master
       - build-and-zip:
-          context: Codehub-Common
+          context: 
+            - Codehub-Common
+            - Upshift-Common
           requires:
             - request-to-move-build-to-artifactory
           filters:
