@@ -1,5 +1,5 @@
 ---
-name: dot-net-core-project-accelerator
+name: .NET Core Project Accelerator
 
 description: This application generates enterprise standard .NET Core Project scaffold with re-usable modules like logging, exception handling, caching, health check etc. 
 
@@ -9,11 +9,15 @@ landingPagePath: accelerator
 
 resultPagePath: result
 
+implementationLanguage: Java
+
 authorName: Amrita.Hazra@cognizant.com , SandipKumar.Bhunia@cognizant.com
 
 isEnabled: true
 
 version: 1.0.0
+
+manifestVersion: v1
 
 pluginSource: Custom
 

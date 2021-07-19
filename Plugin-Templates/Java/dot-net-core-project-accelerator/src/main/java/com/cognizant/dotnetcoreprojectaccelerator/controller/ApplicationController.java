@@ -9,7 +9,10 @@ import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.PRO
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.STATUS;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.UPSHIFT_ORCHESTRATION_PLUGINS_STATUS_ENDPOINT;
 
-import java.time.Instant;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,7 @@ import com.cognizant.dotnetcoreprojectaccelerator.model.Output;
 import com.cognizant.dotnetcoreprojectaccelerator.service.ApplicationService;
 import com.cognizant.dotnetcoreprojectaccelerator.service.CommonService;
 import com.cognizant.dotnetcoreprojectaccelerator.service.OutputService;
+import com.cognizant.dotnetcoreprojectaccelerator.service.persistence.FilePersistenceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,7 +65,10 @@ public class ApplicationController {
 
 	@Autowired
 	private CommonService commonService;
-	
+
+	@Autowired
+	private FilePersistenceService filePersistenceService;
+
 	public void initiateResponseToUpShift(String processInstanceId, String applicationName) {
 		LOGGER.info("Starting to send status message to UpShift (Orchestration Engine) for processInstanceId "
 				+ processInstanceId);
@@ -75,8 +82,9 @@ public class ApplicationController {
 		JsonObject pluginoutput = new JsonObject();
 		pluginoutput.addProperty("Process Instance ID", processInstanceId);
 		pluginoutput.addProperty("Status", status);
-		pluginoutput.addProperty("Date", Instant.now().toString());
-		pluginoutput.addProperty("Output File Name", applicationName + "-WEBAPI.zip");
+		pluginoutput.addProperty("Date", LocalDate.now().toString());
+		String fileName = applicationName + "-WEBAPI.zip";
+		pluginoutput.addProperty("Output File Name", fileName);
 
 		responseBodyJson.add(PLUGIN_OUTPUT, pluginoutput);
 		responseBodyJson.addProperty(STATUS, status);
@@ -97,11 +105,12 @@ public class ApplicationController {
 	}
 
 	@RequestMapping(path = "/result")
-	public String getResult(HttpServletRequest request, Model model) throws JsonMappingException, JsonProcessingException {
+	public String getResult(HttpServletRequest request, Model model)
+			throws JsonMappingException, JsonProcessingException {
 
 		String processInstanceId = request.getParameter("processInstanceId");
 		LOGGER.info("In result endpoint processInstanceId " + processInstanceId);
-		
+
 		Output output = outputService.findOne(processInstanceId);
 		ObjectMapper mapper = new ObjectMapper();
 		MigratorEntity entity = mapper.readValue(output.getEntityString(), MigratorEntity.class);
@@ -137,12 +146,59 @@ public class ApplicationController {
 		model.addAttribute("entity", entity);
 		return "migrator";
 	}
-	
+
+	@RequestMapping(path = "/download", method = RequestMethod.POST)
+	public void downloadFile(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+
+		String processInstanceId = request.getParameter("processInstanceId");
+		LOGGER.info("In download endpoint processInstanceId " + processInstanceId);
+
+		Output output = outputService.findOne(processInstanceId);
+		ObjectMapper mapper = new ObjectMapper();
+		MigratorEntity entity = mapper.readValue(output.getEntityString(), MigratorEntity.class);
+
+		LOGGER.info("In download - Entity Info " + entity.toString());
+
+		List<String> commonFramework = new ArrayList<>();
+		commonFramework.add("Logging");
+		commonFramework.add("JWT");
+		commonFramework.add("Exception Handling");
+		commonFramework.add("Caching");
+		commonFramework.add("SSO");
+		// commonFramework.add("Health Check");
+		commonFramework.add("Swagger Support");
+		entity.setCommonFrameworks(commonFramework);
+		model.addAttribute("entity", entity);
+
+		String applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
+		String folderName = StringUtils.replace(entity.getApplnName(), " ", "_") + "_WEBAPI_zip";
+		String myHomePath = System.getProperty("user.home");
+		String filePath = myHomePath + File.separator + "upshift" + File.separator + "plugins" + File.separator
+				+ "objectStorage" + File.separator + "upshift_dotnetcore_project_accelerator" + File.separator
+				+ processInstanceId + File.separator + folderName + File.separator
+				+ applicationName + "-WEBAPI.zip";
+
+		byte[] data = Files.readAllBytes(new File(filePath).toPath());
+
+		response.addHeader("Content-Disposition", "attachment; filename=\"" + applicationName + "-WEBAPI" + ".zip\"");
+		response.setContentType("application/zip");
+		response.getOutputStream().write(data);
+		response.getOutputStream().flush();
+
+		/*
+		 * ResponseEntity responseEntity =
+		 * filePersistenceService.getPluginDataFile(applicationName + "-WEBAPI.zip",
+		 * entity.getProcessInstanceId()); File file = (File) responseEntity.getBody();
+		 * byte[] zipout = FileUtils.readFileToByteArray(file);
+		 */
+
+	}
+
 	@RequestMapping(path = "/createProject", method = RequestMethod.POST)
 	public void getMigrator(HttpServletRequest request, HttpServletResponse response, MigratorEntity entity)
 			throws Exception {
 
-		LOGGER.info("Entity Info "+entity.toString());
+		LOGGER.info("Entity Info " + entity.toString());
 
 		String processInstanceId = entity.getProcessInstanceId();
 		String applicationName = null;
@@ -160,7 +216,18 @@ public class ApplicationController {
 					// Execute the plugin
 					applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
 					byte[] zipOutput = service.generateProject(entity);
-					
+					// String zipOutput = service.generateProject(entity);
+					// entity.setFilePath(zipOutput);
+					// output.setFilePath(zipOutput);
+					File fileToBeStored = new File(applicationName + "-WEBAPI.zip");
+					try (FileOutputStream fileOuputStream = new FileOutputStream(fileToBeStored)) {
+						fileOuputStream.write(zipOutput);
+					}
+					filePersistenceService.createPluginDataFile(applicationName + "-WEBAPI.zip", processInstanceId,
+							fileToBeStored);
+
+					System.out.println("Stored in DB");
+
 					response.addHeader("Content-Disposition",
 							"attachment; filename=\"" + applicationName + "-WEBAPI" + ".zip\"");
 					response.setContentType("application/zip");

@@ -19,11 +19,13 @@ import com.cognizant.dotnetcoreprojectaccelerator.util.ZipUtils;
 public class ApplicationService {
 
 	public byte[] generateProject(MigratorEntity entity) throws Exception {
+	//public String generateProject(MigratorEntity entity) throws Exception {
 
 		String applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
 		String outputFolder = applicationName + "-WEBAPI";
 		byte[] zipout = null;
 		String folderPath = null;
+		//String zipFolderPath = null;
 		try {
 
 			FileOperationUtils.createRootDirectory(outputFolder);
@@ -282,6 +284,7 @@ public class ApplicationService {
 					"classpath*:content/DotNetCore.Framework/WebService/Configuration/*");
 
 			zipout = ZipUtils.zipFolder(outputFolder);
+			//zipFolderPath = ZipUtils.saveZipFolder(outputFolder, applicationName);
 		} catch (Exception ex) {
 			throw ex;
 		} finally {

@@ -1,5 +1,6 @@
 package com.cognizant.dotnetcoreprojectaccelerator.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,7 +11,8 @@ public class Output {
 	private String processInstanceId;
 
 	private String status;
-	
+
+	@Column(columnDefinition = "LONGVARCHAR")
 	private String entityString;
 
 	public Output() {
