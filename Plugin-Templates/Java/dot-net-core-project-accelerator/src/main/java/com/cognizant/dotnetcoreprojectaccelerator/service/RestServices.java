@@ -16,6 +16,12 @@ public class RestServices {
         this.rest = new RestTemplate();
     }
 
+    public ResponseEntity getCallForBlob(String uri, HttpHeaders headers) {
+        HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
+        ResponseEntity<byte[]> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
+        return responseEntity;
+    }
+    
     public ResponseEntity getCall(String uri, HttpHeaders headers) {
         HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
         ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);

@@ -21,3 +21,5 @@ targeting cloud environments.
 		- SSO
 		- Swagger Support
 		- Health Check
+-Prerequisites 
+	- .NET Core 3.1 with Visual Studio 2019		

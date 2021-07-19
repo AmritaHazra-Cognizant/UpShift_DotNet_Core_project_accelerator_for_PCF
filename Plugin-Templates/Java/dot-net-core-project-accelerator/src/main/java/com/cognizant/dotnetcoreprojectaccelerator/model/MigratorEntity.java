@@ -14,7 +14,7 @@ public class MigratorEntity {
 	public String enableDockerSupport;
 	public List<String> commonFrameworks;
 	public String processInstanceId;
-	
+
 	public String getApplnName() {
 		return applnName;
 	}
@@ -102,6 +102,5 @@ public class MigratorEntity {
 				+ ", serverType=" + serverType + ", enableDockerSupport=" + enableDockerSupport + ", commonFrameworks="
 				+ commonFrameworks + ", processInstanceId=" + processInstanceId + "]";
 	}
-	
-	
+
 }

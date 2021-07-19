@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -16,6 +19,8 @@ import com.cognizant.dotnetcoreprojectaccelerator.service.RestServices;
 import static com.cognizant.dotnetcoreprojectaccelerator.constants.Constants.AUTHORIZATION;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FilePersistenceService {
@@ -48,6 +53,10 @@ public class FilePersistenceService {
         String authorizationToken = commonService.getAuthorizationToken();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AUTHORIZATION, authorizationToken);
+        List<MediaType> acceptableMediaTypes = new ArrayList<>();
+        acceptableMediaTypes.add(MediaType.ALL);
+		httpHeaders.setAccept(acceptableMediaTypes );
+		httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
         String getPluginDataFileUrl = upshiftUrl
                 .concat(PLUGINS_DATA_FILE_ENDPOINT_PREFIX)
@@ -60,7 +69,7 @@ public class FilePersistenceService {
         }
 
 
-        return restServices.getCall(getPluginDataFileUrl, httpHeaders);
+        return restServices.getCallForBlob(getPluginDataFileUrl, httpHeaders);
     }
 
     /**
