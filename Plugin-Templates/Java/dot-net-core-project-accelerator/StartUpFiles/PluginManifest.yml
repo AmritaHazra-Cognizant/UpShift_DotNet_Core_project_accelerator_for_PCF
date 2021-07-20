@@ -21,4 +21,4 @@ manifestVersion: v1
 
 pluginSource: Custom
 
-pluginId: upshift.dotnetcore.project.accelerator
+pluginId: DotNetCoreProjectAccelerator

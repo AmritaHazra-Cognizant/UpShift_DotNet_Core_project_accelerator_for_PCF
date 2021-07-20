@@ -19,6 +19,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,9 +175,8 @@ public class ApplicationController {
 		String folderName = StringUtils.replace(entity.getApplnName(), " ", "_") + "_WEBAPI_zip";
 		String myHomePath = System.getProperty("user.home");
 		String filePath = myHomePath + File.separator + "upshift" + File.separator + "plugins" + File.separator
-				+ "objectStorage" + File.separator + "upshift_dotnetcore_project_accelerator" + File.separator
-				+ processInstanceId + File.separator + folderName + File.separator
-				+ applicationName + "-WEBAPI.zip";
+				+ "objectStorage" + File.separator + "dotnetcoreprojectaccelerator" + File.separator + processInstanceId
+				+ File.separator + folderName + File.separator + applicationName + "-WEBAPI.zip";
 
 		byte[] data = Files.readAllBytes(new File(filePath).toPath());
 
@@ -202,6 +202,7 @@ public class ApplicationController {
 
 		String processInstanceId = entity.getProcessInstanceId();
 		String applicationName = null;
+		File fileToBeStored = null;
 		if (processInstanceId != null) {
 
 			Output output = outputService.findOne(processInstanceId);
@@ -217,15 +218,12 @@ public class ApplicationController {
 					applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
 					byte[] zipOutput = service.generateProject(entity);
 					// String zipOutput = service.generateProject(entity);
-					// entity.setFilePath(zipOutput);
-					// output.setFilePath(zipOutput);
-					File fileToBeStored = new File(applicationName + "-WEBAPI.zip");
-					try (FileOutputStream fileOuputStream = new FileOutputStream(fileToBeStored)) {
-						fileOuputStream.write(zipOutput);
-					}
+					fileToBeStored = new File(applicationName + "-WEBAPI.zip");
+					FileOutputStream fileOuputStream = new FileOutputStream(fileToBeStored);
+					fileOuputStream.write(zipOutput);
 					filePersistenceService.createPluginDataFile(applicationName + "-WEBAPI.zip", processInstanceId,
 							fileToBeStored);
-
+					fileOuputStream.close();
 					System.out.println("Stored in DB");
 
 					response.addHeader("Content-Disposition",
@@ -242,6 +240,8 @@ public class ApplicationController {
 				} catch (Exception e) {
 					LOGGER.error("Exception while processing.", e);
 					output.setStatus(FAIL);
+				} finally {
+					FileUtils.deleteQuietly(fileToBeStored);
 				}
 				outputService.save(output);
 
