@@ -1,5 +1,5 @@
 ---
-name: .NET Core Scaffolding Template Generator Tool
+name: .NET Core Scaffolding Template Generator
 
 description: This application generates enterprise standard .NET Core Project scaffold with re-usable modules like logging, exception handling, caching, health check etc. 
 
