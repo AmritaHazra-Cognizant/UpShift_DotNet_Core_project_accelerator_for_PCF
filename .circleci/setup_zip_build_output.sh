@@ -71,7 +71,7 @@ apt update
 apt install -y zip
 
 pushd package-output
-    zip -r dot-net-core-project-accelerator_"${CIRCLE_BUILD_NUM}".zip .
+    zip -r dot-net-core-scaffolding-template-generator_"${CIRCLE_BUILD_NUM}".zip .
 popd
 
 echo "---------------------Package output contents---------------------"
