@@ -172,7 +172,9 @@ public class ApplicationController {
 		model.addAttribute("entity", entity);
 
 		String applicationName = StringUtils.replace(entity.getApplnName(), " ", "-");
-		String folderName = StringUtils.replace(entity.getApplnName(), " ", "_") + "_WEBAPI_zip";
+		String folderName = entity.getApplnName().replaceAll("[^a-zA-Z0-9]", "_")+ "_WEBAPI_zip";
+		//String folderName = StringUtils.replace(entity.getApplnName(), " ", "_") + "_WEBAPI_zip";
+		
 		String myHomePath = System.getProperty("user.home");
 		String filePath = myHomePath + File.separator + "upshift" + File.separator + "plugins" + File.separator
 				+ "objectStorage" + File.separator + "dotnetcoreprojectaccelerator" + File.separator + processInstanceId
